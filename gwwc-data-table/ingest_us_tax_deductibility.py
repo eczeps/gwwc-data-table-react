@@ -13,17 +13,21 @@ def update_us_tax_deductibility():
         for row in data_iter:
             charity_on_sheet_name = row[1]
             driver.get(f'https://www.charitynavigator.org/index.cfm?keyword_list={charity_on_sheet_name}&bay=search.results')
-            #charity_on_charitynav_name = driver.find_element_by_class_name("charity-name-mobile").find_element_by_css_selector("*").text
-            charity_on_charitynav_name = driver.find_element_by_css_selector("h3.charity-name-desktop a").get_attribute("text")
-            ratio = SequenceMatcher(None, charity_on_sheet_name, charity_on_charitynav_name).ratio()
-            print(charity_on_charitynav_name, charity_on_sheet_name)
-            print(ratio)
-            if ratio > .8:
-                # the top result on charitynavigator is most likely the same charity from our sheet, so let's update our sheet saying it's US deductible
-                result_rows.append(row + [1])
-                print('appending')
-            else:
-                print('not appending')
+            try:
+                charity_on_charitynav_name = driver.find_element_by_css_selector("h3.charity-name-desktop a").get_attribute("text")
+                ratio = SequenceMatcher(None, charity_on_sheet_name, charity_on_charitynav_name).ratio()
+                if ratio > .8:
+                    # the top result on charitynavigator is most likely the same charity from our sheet, so let's update our sheet saying it's US deductible
+                    result_rows.append(row + [1])
+                elif ratio > .4: 
+                    # to make the final sheet, I went through the ones that were printed here manually and picked out the ones that seemed like matches
+                    # future updates could automate this gray area better
+                    print('unsure about this one: ', charity_on_sheet_name, charity_on_charitynav_name)
+                    result_rows.append(row + [0])
+                else:
+                    result_rows.append(row + [0])
+            except Exception:
+                # no results for this search
                 result_rows.append(row + [0])
     
     with open('../../charities_with_tax_deductibility.csv', 'w', newline='') as myfile:
