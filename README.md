@@ -5,5 +5,4 @@ This repo was created to update the tables on [this page](https://www.givingwhat
 You can see this table working in action on Heroku [here](https://gwwc-data-table-react.herokuapp.com/).
 
 ### Running this data table locally
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). See documentation there for building & running this project locally.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). To run it locally, run `npm run build` and then `npm run start`.
