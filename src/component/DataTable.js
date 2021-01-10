@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { useTable } from 'react-table';
 import MUITable from './MUITable';
 
 function getColumns() {
@@ -54,13 +53,15 @@ function filterEmpty(str) {
 
 function createRows(organizations) {
   const data = Object.entries(organizations);
-  return data.map(([slug, item]) => ({
+  const formattedData = data.map(([slug, item]) => ({
     slug,
     charity: filterEmpty(item['Full Name']),
     cause: filterEmpty(item['Core Cause']),
     totalDonations: filterEmpty(item['Total Donations']),
     gwwcDonations: filterEmpty(item['GWWC &dollar donated']),
+    defaultSort: item['Default Sort'],
   })).filter(x => !!x['charity']);
+  return formattedData.sort((a, b) => (a.defaultSort > b.defaultSort) ? 1 : -1)
 }
 
 function DataTable(props) {
