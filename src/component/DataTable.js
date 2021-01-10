@@ -12,6 +12,14 @@ function getColumns() {
       Header: 'Cause Area',
     },
     {
+      accessor: 'totalDonations',
+      Header: 'Total Donations',
+    },
+    {
+      accessor: 'gwwcDonations',
+      Header: 'GWWC Donations',
+    },
+    {
       accessor: 'slug',
       id: 'donate',
       Header: 'Donate',
